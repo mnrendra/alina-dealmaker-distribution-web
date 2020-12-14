@@ -1,0 +1,23 @@
+.Header {
+  background: #FF5722;
+  color: rgba(0, 0, 0, .54)
+}
+
+.Header .navbar.navbar-expand-lg.fixed-top {
+  background: inherit;
+  color: inherit;
+}
+
+.Header .navbar.navbar-expand-lg.fixed-top span.navbar-brand {
+  color: rgba(0, 0, 0, .84);
+  cursor: default;
+}
+
+.Header .Header-Logout {
+  color: inherit;
+  cursor: pointer;
+}
+
+.Header .Header-Logout:hover {
+  color: rgba(0, 0, 0, .84)
+}

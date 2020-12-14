@@ -1,25 +1,76 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react'
+import jwt from 'jsonwebtoken'
+import Cookies from 'universal-cookie'
 
-function App() {
+import { API_URL, SOCKET_IO_OPTIONS, JWT_KEY } from './config'
+
+import { useSocket } from './hooks'
+
+import {
+  AuthPage,
+  AdminPage,
+  CustomerServicePage
+} from './pages/'
+
+import './App.css'
+
+const App = () => {
+  const [page, setPage] = useState('')
+  const [user, setUser] = useState({})
+
+  const [socket] = useSocket(API_URL, SOCKET_IO_OPTIONS)
+
+  useEffect(() => {
+    const cookies = new Cookies()
+    const token = cookies.get('token')
+    const decoded = token ? jwt.verify(token, JWT_KEY) : { type: 'auth', data: {} }
+    //
+    setPage(decoded.type)
+    setUser(decoded.data)
+  }, [])
+
+  const handleLogging = (token = '') => {
+    const decoded = jwt.verify(token, JWT_KEY)
+    setPage(decoded.type)
+    setUser(decoded.data)
+    //
+    const cookies = new Cookies()
+    cookies.set('token', token, { path: '/' })
+  }
+
+  const renderPage = (page, socket) => {
+    switch (page) {
+      case 'auth':
+        return (
+          <AuthPage
+            onLogged={handleLogging}
+          />
+        )
+      case 'admin':
+        return (
+          <AdminPage
+            socket={socket}
+          />
+        )
+      case 'customerService':
+        return (
+          <CustomerServicePage
+            user={user}
+            socket={socket}
+          />
+        )
+      default:
+        return (
+          <>Loading</>
+        )
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      {renderPage(page, socket)}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,0 +1,88 @@
+.AuthPage {
+  width: 80%;
+  height: 100%;
+  float: none;
+  margin: auto;
+}
+
+.AuthPage .AuthPage-Logo {
+  width: 278;
+  height: 58px;
+}
+
+.AuthPage .text-center.mb-4 img {
+  margin-bottom: 8px;
+}
+
+.AuthPage .form-label-group {
+  margin: 12px auto;
+}
+
+.AuthPage .form-label-group label {
+  margin: 8px auto;
+  font-size: 16px;
+}
+
+.AuthPage .form-label-group input {
+  height: 50px;
+}
+
+.AuthPage .btn.btn-lg.btn-primary.btn-block {
+  width: 100%;
+  margin-top: 24px;
+  background: #FF5722;
+  border: none;
+}
+
+.AuthPage .btn.btn-lg.btn-primary.btn-block:hover {
+  background: #E64A19;
+}
+
+.AuthPage .mt-5.mb-3.text-muted.text-center {
+  margin-top: 40px !important;
+  font-size: 15px !important;
+}
+
+@media (min-width: 576px) {
+  .AuthPage {
+    width: 70%;
+  }
+
+  .AuthPage .AuthPage-Logo {
+    width: 294px;
+    height: 62px;
+  }
+}
+
+@media (min-width: 768px) {
+  .AuthPage {
+    width: 60%;
+  }
+
+  .AuthPage .AuthPage-Logo {
+    width: 310px;
+    height: 65px;
+  }
+}
+
+@media (min-width: 992px) {
+  .AuthPage {
+    width: 50%;
+  }
+
+  .AuthPage .AuthPage-Logo {
+    width: 326px;
+    height: 68px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .AuthPage {
+    width: 40%;
+  }
+
+  .AuthPage .AuthPage-Logo {
+    width: 342px;
+    height: 72px;
+  }
+}
