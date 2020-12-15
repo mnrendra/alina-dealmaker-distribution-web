@@ -2,8 +2,12 @@ export const KEY = 'lRZVu5v6nlc9NUwj'
 
 export const JWT_KEY = 'CendolD4w3t!'
 
-export const API_URL = 'http://192.168.18.92:3001'
-// export const API_URL = 'http://localhost:3001'
+// export const API_URL = 'http://192.168.18.92:3001'
+export const API_URL = 'http://localhost:3001'
+
+export const MY_URL = 'http://localhost:3000'
+
+export const NOTIF_SOUND_PATH = './tarik_sis.mp3'
 
 export const SOCKET_IO_OPTIONS = {
   withCredentials: true,
