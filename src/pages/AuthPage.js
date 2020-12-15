@@ -17,7 +17,7 @@ const AuthPage = ({ onLogged }) => {
 
   useEffect(() => {
     const { error, fetching, data } = JSON.parse(response)
-    if (error) {
+    if (error && error.message) {
       setAlert('error: ' + error.message)
     } else if (fetching) {
       setAlert('loading...')
@@ -72,7 +72,7 @@ const AuthPage = ({ onLogged }) => {
         </div>
         {/* */}
         <button className='btn btn-lg btn-primary btn-block' onClick={handleSubmit}>Sign in</button>
-        <p className='mt-5 mb-3 text-muted text-center'>@mnrendra &copy; 2020</p>
+        <p className='mt-5 mb-3 text-muted text-center'>Alina Group &copy; 2020</p>
         {/* */}
       </div>
     </div>

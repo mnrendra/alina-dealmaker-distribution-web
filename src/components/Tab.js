@@ -1,16 +1,24 @@
 import './Tab.css'
 
-const Tab = ({ csRes, leadRes, onChange, currentTab }) => {
-  const renderTabs = ({ data }) => {
-    const res = data || {}
-    const rows = res.rows || []
+const Tab = ({ currentTab, dealMakers, leads, onChange }) => {
+  const renderTabs = (dealMakers = [], allLeads = []) => {
+    if (dealMakers.length) {
+      return dealMakers.map(dealMaker => {
+        const leads = allLeads.filter(lead => lead.customerService._id === dealMaker._id)
 
-    if (rows.length) {
-      return rows.map(cs => {
         return (
-          <span key={cs._id} className={`nav-link ${currentTab === cs._id ? 'active' : ''}`} onClick={() => onChange(cs._id)} style={{ cursor: 'pointer' }}>
-            {cs.name}
-            <span className='badge bg-light text-dark rounded-pill align-text-bottom'>{cs.leads.length}</span>
+          <span
+            key={dealMaker._id}
+            className={`nav-link ${currentTab === dealMaker._id ? 'active' : ''}`}
+            onClick={() => onChange(dealMaker._id)}
+            style={{ cursor: 'pointer' }}
+          >
+            {dealMaker.name}
+            <span
+              className='badge bg-light text-dark rounded-pill align-text-bottom'
+            >
+              {leads.length}
+            </span>
           </span>
         )
       })
@@ -23,11 +31,19 @@ const Tab = ({ csRes, leadRes, onChange, currentTab }) => {
     <div className='Tab'>
       <div className='nav-scroller shadow-sm'>
         <nav className='nav nav-underline' aria-label='Secondary navigation'>
-          <span className={`nav-link ${currentTab === 'all' ? 'active' : ''}`} onClick={() => onChange('all')} style={{ cursor: 'pointer' }}>
+          <span
+            className={`nav-link ${currentTab === 'all' ? 'active' : ''}`}
+            onClick={() => onChange('all')}
+            style={{ cursor: 'pointer' }}
+          >
             All
-            <span className='badge bg-light text-dark rounded-pill align-text-bottom'>{leadRes.data && leadRes.data.total}</span>
+            <span
+              className='badge bg-light text-dark rounded-pill align-text-bottom'
+            >
+              {leads.length}
+            </span>
           </span>
-          {renderTabs(csRes)}
+          {renderTabs(dealMakers, leads)}
         </nav>
       </div>
     </div>

@@ -2,48 +2,93 @@ import { useState, useEffect } from 'react'
 
 import { API_URL } from '../config'
 
-import { useFetch } from '../hooks'
+// import { useFetch } from '../hooks'
 
-import Header from '../components/Header'
-import Tab from '../components/Tab'
-import ListLeads from '../components/ListLeads'
+import {
+  Header,
+  Tab,
+  ListLeads
+} from '../components'
 
 import './AdminPage.css'
 
-const AdminPage = ({ socket }) => {
+const AdminPage = ({ user, socket }) => {
   const [currentTab, setCurrentTab] = useState('all')
+  const [error, setError] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [dealMakers, setDealMakers] = useState([])
+  const [allLeads, setAllLeads] = useState([])
+  const [leads, setLeads] = useState([])
 
-  const [csRes, csHttp] = useFetch(API_URL + '/customer-service')
-  const [leadRes, leadHttp] = useFetch(API_URL + '/lead')
-  useEffect(() => {
-    csHttp.doGet()
-    leadHttp.doGet()
-  }, [csHttp, leadHttp])
-
-  const leadData = leadRes.data || {}
-  const leadRows = leadData.rows || []
-  const leads = leadRows.filter(lead => {
-    if (currentTab === 'all') return lead
-    else if (currentTab === lead.customerService._id) return lead
-    else return false
-  })
+  const handleFetch = (url = API_URL, setState = () => {}) => {
+    setLoading(true)
+    fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        console.log(url, json)
+        if (json.error) {
+          setState([])
+          setError({ message: json.error.message })
+        } else if (json.rows) {
+          setError({})
+          setState(json.rows)
+        } else {
+          console.log('HALU')
+        }
+        setLoading(false)
+      })
+  }
 
   const handleChangeTab = csId => {
     setCurrentTab(csId)
   }
 
+  useEffect(() => {
+    handleFetch(API_URL + '/customer-service', setDealMakers)
+  }, [])
+
+  useEffect(() => {
+    handleFetch(API_URL + '/lead', setAllLeads)
+  }, [])
+
+  useEffect(() => {
+    const leads = allLeads.filter((lead = {}) => {
+      if (currentTab === 'all') return lead
+      else if (lead.customerService && currentTab === lead.customerService._id) return lead
+      else return false
+    })
+
+    setLeads(leads)
+  }, [currentTab, allLeads])
+
+  const renderContent = (currentTab = 'all', error = {}, loading = false, dealMakers = [], leads = []) => {
+    if (error.message) {
+      return (<div style={{ margin: '100px auto' }}>{error.message}</div>)
+    } else if (loading) {
+      return (<div style={{ margin: '100px auto' }}>Loading...</div>)
+    } else {
+      return (
+        <>
+          <Tab
+            currentTab={currentTab}
+            dealMakers={dealMakers}
+            leads={leads}
+            onChange={handleChangeTab}
+          />
+          <ListLeads
+            leads={leads}
+          />
+        </>
+      )
+    }
+  }
+
   return (
     <div className='AdminPage'>
-      <Header />
-      <Tab
-        leadRes={leadRes}
-        csRes={csRes}
-        onChange={handleChangeTab}
-        currentTab={currentTab}
+      <Header
+        user={user}
       />
-      <ListLeads
-        leads={leads}
-      />
+      {renderContent(currentTab, error, loading, dealMakers, leads)}
     </div>
   )
 }

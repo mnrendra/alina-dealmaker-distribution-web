@@ -2,71 +2,81 @@ import { useEffect, useState } from 'react'
 
 import { API_URL } from '../config'
 
-import { useFetch } from '../hooks'
+// import { useFetch } from '../hooks'
 
-import Header from '../components/Header'
-import ListLeads from '../components/ListLeads'
+import {
+  Header,
+  ListLeads
+} from '../components'
 
 import './CustomerServicePage.css'
 
 const CustomerServicePage = ({ user, socket }) => {
-  const userStr = JSON.stringify(user || {})
-
   const [leads, setLeads] = useState([])
   const [newLead, setNewLead] = useState({})
   const [allLeads, setAllLeads] = useState({})
-
-  const [leadResponse, { doGet }] = useFetch(API_URL + '/lead?dealmaker=' + user._id)
-
-  useEffect(() => {
-    doGet()
-  }, [doGet])
+  const [error, setError] = useState({})
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const { error, data } = leadResponse
-    const userObj = JSON.parse(userStr)
+    if (socket && socket.on && socket.emit) {
+      socket.emit('join', { type: 'dealMaker', userIds: [user._id] })
 
-    if (error) {
-      console.log('error', error)
-    } else if (data && data.rows) {
-      const thisLeads = data.rows.filter(lead => {
-        return lead.customerService._id === userObj._id && leads
-      })
-      setLeads(thisLeads)
-    }
-  }, [leadResponse, userStr, leads])
-
-  useEffect(() => {
-    const userObj = JSON.parse(userStr)
-
-    if (socket && userObj._id) {
-      const userIds = [userObj._id]
-      socket.emit('join', { type: 'dealMaker', userIds })
-    }
-  }, [socket, userStr])
-
-  useEffect(() => {
-    if (socket) {
-      socket.on('new-leads', data => {
+      socket.on('new-leads', (data = {}) => {
         setNewLead(data)
       })
     }
-  }, [socket])
+  }, [socket, user])
+
+  const handleFetch = (url = API_URL, setState = () => {}) => {
+    setLoading(true)
+    fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        if (json.error) {
+          setState([])
+          setError({ message: json.error.message })
+        } else if (json.rows) {
+          setError({})
+          setState(json.rows)
+        } else {
+          console.log('error', json)
+        }
+        setLoading(false)
+      })
+  }
 
   useEffect(() => {
-    const allLeads = newLead._id ? leads.push(newLead) : leads
+    handleFetch(API_URL + '/lead?dealmaker=' + user._id + '&time=' + new Date('2020-12-12').getTime(), setLeads)
+  }, [user])
+
+  useEffect(() => {
+    const allLeads = newLead && newLead._id ? [newLead, ...leads] : leads
     setAllLeads(allLeads)
   }, [leads, newLead])
+
+  const renderContent = (error = {}, loading = false, leads = []) => {
+    if (error.message) {
+      return (<div style={{ margin: '100px auto' }}>{error.message}</div>)
+    } else if (loading) {
+      return (<div style={{ margin: '100px auto' }}>Loading...</div>)
+    } else {
+      return (
+        <>
+          <ListLeads
+            leads={leads}
+          />
+        </>
+      )
+    }
+  }
 
   return (
     <div className='CustomerServicePage'>
       <Header
         user={user}
       />
-      <ListLeads
-        user={user}
-        leads={allLeads}
-      />
+      {renderContent(error, loading, allLeads)}
     </div>
   )
 }

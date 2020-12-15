@@ -1,4 +1,12 @@
 .Tab .nav-scroller.shadow-sm {
-  background: #FF9E80;
-  color: rgba(0, 0, 0, .84)
+  background: #FF7043;
+}
+
+.Tab .nav-scroller.shadow-sm span {
+  color: rgba(255, 255, 255, .7);
+}
+
+.Tab .nav-scroller.shadow-sm span:hover,
+.Tab .nav-scroller.shadow-sm span.active {
+  color: rgba(255, 255, 255, 1);
 }

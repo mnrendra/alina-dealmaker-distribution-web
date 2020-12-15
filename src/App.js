@@ -24,7 +24,7 @@ const App = () => {
     const cookies = new Cookies()
     const token = cookies.get('token')
     const decoded = token ? jwt.verify(token, JWT_KEY) : { type: 'auth', data: {} }
-    //
+
     setPage(decoded.type)
     setUser(decoded.data)
   }, [])
@@ -33,7 +33,7 @@ const App = () => {
     const decoded = jwt.verify(token, JWT_KEY)
     setPage(decoded.type)
     setUser(decoded.data)
-    //
+
     const cookies = new Cookies()
     cookies.set('token', token, { path: '/' })
   }
@@ -49,6 +49,7 @@ const App = () => {
       case 'admin':
         return (
           <AdminPage
+            user={user}
             socket={socket}
           />
         )
@@ -60,9 +61,7 @@ const App = () => {
           />
         )
       default:
-        return (
-          <>Loading</>
-        )
+        return (<div style={{ margin: '100px auto' }}>Loading...</div>)
     }
   }
 

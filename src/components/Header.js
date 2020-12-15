@@ -13,9 +13,16 @@ const Header = ({ user }) => {
     <div className='Header'>
       <nav className='navbar navbar-expand-lg fixed-top' aria-label='Main navigation'>
         <div className='container-fluid'>
-          <span className='navbar-brand'>Hi{user ? ' ' + user.name : ''}! Good luck today!</span>
+          <span className='navbar-brand'>
+            <img src='./alina_logo_white.png' alt='' style={{ width: '153px', height: '32px' }} />
+          </span>
           <ul className='nav justify-content-end'>
-            <li className='nav-item Header-Logout' onClick={handleLogout}><span className='nav-link active'>Logout</span></li>
+            <li
+              className='nav-item Header-Logout'
+              onClick={handleLogout}
+            >
+              <span className='nav-link active'>Logout</span>
+            </li>
           </ul>
         </div>
       </nav>

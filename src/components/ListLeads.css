@@ -1,0 +1,7 @@
+.ListLeads.d-flex.text-muted.pt-3 {
+  cursor: pointer;
+}
+
+.ListLeads.d-flex.text-muted.pt-3:hover {
+  background: #F5F5F5;
+}

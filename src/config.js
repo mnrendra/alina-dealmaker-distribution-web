@@ -2,9 +2,8 @@ export const KEY = 'lRZVu5v6nlc9NUwj'
 
 export const JWT_KEY = 'CendolD4w3t!'
 
-// export const API_URL = 'http://192.168.18.92:3001'
-
-export const API_URL = 'http://localhost:3001'
+export const API_URL = 'http://192.168.18.92:3001'
+// export const API_URL = 'http://localhost:3001'
 
 export const SOCKET_IO_OPTIONS = {
   withCredentials: true,
@@ -25,3 +24,5 @@ export const FETCH_IO_OPTIONS = {
   redirect: 'follow', // manual, *follow, error
   referrerPolicy: 'no-referrer' // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
 }
+
+export const FIRST_CHAT_TEMPLATE = 'Selamat%20sore%20kak'
