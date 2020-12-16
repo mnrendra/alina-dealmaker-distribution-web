@@ -1,6 +1,6 @@
 import './Tab.css'
 
-const Tab = ({ currentTab, dealMakers, leads, onChange }) => {
+const Tab = ({ currentTab, dealMakers, allLeads, onChange }) => {
   const renderTabs = (dealMakers = [], allLeads = []) => {
     if (dealMakers.length) {
       return dealMakers.map(dealMaker => {
@@ -40,10 +40,10 @@ const Tab = ({ currentTab, dealMakers, leads, onChange }) => {
             <span
               className='badge bg-light text-dark rounded-pill align-text-bottom'
             >
-              {leads.length}
+              {allLeads.length}
             </span>
           </span>
-          {renderTabs(dealMakers, leads)}
+          {renderTabs(dealMakers, allLeads)}
         </nav>
       </div>
     </div>

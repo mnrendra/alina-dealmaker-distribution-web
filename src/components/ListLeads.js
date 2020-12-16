@@ -2,7 +2,7 @@ import { FIRST_CHAT_TEMPLATE } from '../config'
 
 import './ListLeads.css'
 
-const ListLeads = ({ leads }) => {
+const ListLeads = ({ leads, date }) => {
   const handleOpenWhatsapp = (phone) => {
     const whatsappURL = 'whatsapp://send?phone=' + phone + '&text=' + FIRST_CHAT_TEMPLATE
     window.open(whatsappURL)
@@ -54,12 +54,18 @@ const ListLeads = ({ leads }) => {
     }
   }
 
+  const $date = !isNaN(date.getTime()) ? date : { getFullYear: () => false, getMonth: () => false, getDate: () => false }
+  const $dateYear = $date.getFullYear()
+  const $dateMonth = Number($date.getMonth()) ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][$date.getMonth()] : false
+  const $dateDate = $date.getDate()
+  const dateStr = $dateYear && $dateDate && $dateDate ? `${$dateMonth} ${$dateDate}, ${$dateYear}` : 'Error'
+
   return (
     <div className='ListLeads'>
       <main className='container'>
         {/* */}
         <div className='my-3 p-3 bg-white rounded shadow-sm'>
-          <h6 className='border-bottom pb-2 mb-0'><strong>Dec 11, 2020</strong></h6>
+          <h6 className='border-bottom pb-2 mb-0'><strong>{dateStr}</strong></h6>
           {/* */}
           {renderListLeads(leads)}
           {/* */}

@@ -4,11 +4,7 @@ import { API_URL } from '../config'
 
 // import { useFetch } from '../hooks'
 
-import {
-  Header,
-  Tab,
-  ListLeads
-} from '../components'
+import { Header, Tab, ListLeads } from '../components'
 
 import './AdminPage.css'
 
@@ -19,37 +15,44 @@ const AdminPage = ({ user, socket }) => {
   const [dealMakers, setDealMakers] = useState([])
   const [allLeads, setAllLeads] = useState([])
   const [leads, setLeads] = useState([])
+  const [date, setDate] = useState(new Date())
 
-  const handleFetch = (url = API_URL, setState = () => {}) => {
+  useEffect(() => {
     setLoading(true)
-    fetch(url)
+    fetch(API_URL + '/customer-service')
       .then(res => res.json())
       .then(json => {
-        console.log(url, json)
         if (json.error) {
-          setState([])
+          setDealMakers([])
           setError({ message: json.error.message })
         } else if (json.rows) {
           setError({})
-          setState(json.rows)
+          setDealMakers(json.rows)
         } else {
-          console.log('HALU')
+          console.log('Error', json)
         }
         setLoading(false)
       })
-  }
-
-  const handleChangeTab = csId => {
-    setCurrentTab(csId)
-  }
+  }, [setDealMakers])
 
   useEffect(() => {
-    handleFetch(API_URL + '/customer-service', setDealMakers)
-  }, [])
-
-  useEffect(() => {
-    handleFetch(API_URL + '/lead', setAllLeads)
-  }, [])
+    setLoading(true)
+    fetch(API_URL + '/lead?time=' + new Date('2020-12-15').getTime())
+      .then(res => res.json())
+      .then(json => {
+        if (json.error) {
+          setAllLeads([])
+          setError({ message: json.error.message })
+        } else if (json.rows) {
+          setError({})
+          setDate(new Date(json.date))
+          setAllLeads(json.rows)
+        } else {
+          console.log('Error', json)
+        }
+        setLoading(false)
+      })
+  }, [setAllLeads])
 
   useEffect(() => {
     const leads = allLeads.filter((lead = {}) => {
@@ -59,9 +62,13 @@ const AdminPage = ({ user, socket }) => {
     })
 
     setLeads(leads)
-  }, [currentTab, allLeads])
+  }, [setLeads, currentTab, allLeads])
 
-  const renderContent = (currentTab = 'all', error = {}, loading = false, dealMakers = [], leads = []) => {
+  const handleChangeTab = csId => {
+    setCurrentTab(csId)
+  }
+
+  const renderContent = (error = {}, loading = false, currentTab = 'all', dealMakers = [], leads = [], date = new Date()) => {
     if (error.message) {
       return (<div style={{ margin: '100px auto' }}>{error.message}</div>)
     } else if (loading) {
@@ -72,11 +79,12 @@ const AdminPage = ({ user, socket }) => {
           <Tab
             currentTab={currentTab}
             dealMakers={dealMakers}
-            leads={leads}
+            allLeads={allLeads}
             onChange={handleChangeTab}
           />
           <ListLeads
             leads={leads}
+            date={date}
           />
         </>
       )
@@ -88,7 +96,7 @@ const AdminPage = ({ user, socket }) => {
       <Header
         user={user}
       />
-      {renderContent(currentTab, error, loading, dealMakers, leads)}
+      {renderContent(error, loading, currentTab, dealMakers, leads, date)}
     </div>
   )
 }
