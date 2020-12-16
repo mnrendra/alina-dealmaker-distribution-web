@@ -47,7 +47,7 @@ const CustomerServicePage = ({ user, socket }) => {
   useEffect(() => {
     if (user._id) {
       setLoading(true)
-      fetch(API_URL + '/lead?dealmaker=' + user._id + '&time=' + new Date('2020-12-15').getTime())
+      fetch(API_URL + '/lead?dealmaker=' + user._id + '&time=' + new Date('2020-12-16').getTime())
         .then(res => res.json())
         .then(json => {
           if (json.error) {
@@ -74,7 +74,7 @@ const CustomerServicePage = ({ user, socket }) => {
   // render
 
   // render content
-  const renderContent = (error = {}, loading = false, leads = [], date = new Date()) => {
+  const renderContent = (user = {}, error = {}, loading = false, leads = [], date = new Date()) => {
     if (error.message) {
       return (<div style={{ margin: '100px auto' }}>{error.message}</div>)
     } else if (loading) {
@@ -85,6 +85,7 @@ const CustomerServicePage = ({ user, socket }) => {
           <ListLeads
             leads={leads}
             date={date}
+            user={user}
           />
         </>
       )
@@ -97,7 +98,7 @@ const CustomerServicePage = ({ user, socket }) => {
       <Header
         user={user}
       />
-      {renderContent(error, loading, allLeads, date)}
+      {renderContent(user, error, loading, allLeads, date)}
     </div>
   )
 }

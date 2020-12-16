@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { FETCH_IO_OPTIONS } from '../config'
+import { FETCH_OPTIONS } from '../config'
 
 const useFetch = (url, opts = {}) => {
   // const [data, setData] = useState({})
@@ -15,7 +15,7 @@ const useFetch = (url, opts = {}) => {
 
   const [fetching, setFetching] = useState(false)
 
-  const OPTIONS = JSON.stringify(FETCH_IO_OPTIONS)
+  const OPTIONS = JSON.stringify(FETCH_OPTIONS)
   const options = JSON.stringify(opts)
   const bodyStr = JSON.stringify(body)
 

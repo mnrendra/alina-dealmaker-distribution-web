@@ -1,14 +1,21 @@
-import { FIRST_CHAT_TEMPLATE } from '../config'
+import { firstChat } from '../utils/whatsappTemplates'
 
 import './ListLeads.css'
 
-const ListLeads = ({ leads, date }) => {
-  const handleOpenWhatsapp = (phone) => {
-    const whatsappURL = 'whatsapp://send?phone=' + phone + '&text=' + FIRST_CHAT_TEMPLATE
+const ListLeads = ({ user, leads, date }) => {
+  const handleOpenWhatsapp = (phone, leadName, userName) => {
+    const now = new Date()
+    const hours = now.getHours()
+    let time = ''
+    if (hours >= 0 && hours < 10) time = 'pagi'
+    else if (hours >= 10 && hours < 15) time = 'siang'
+    else if (hours >= 15 && hours < 18) time = 'sore'
+    else time = 'malam'
+    const whatsappURL = 'whatsapp://send?phone=' + phone + '&text=' + firstChat(time, leadName, userName)
     window.open(whatsappURL)
   }
 
-  const renderListLeads = (leads = []) => {
+  const renderListLeads = (user = {}, leads = []) => {
     if (leads.length) {
       return leads.map((lead = {}) => {
         const { name, phone, created, customerService } = lead
@@ -24,7 +31,7 @@ const ListLeads = ({ leads, date }) => {
           <div
             key={id}
             className='ListLeads d-flex text-muted pt-3'
-            onClick={() => handleOpenWhatsapp(phone)}
+            onClick={() => handleOpenWhatsapp(phone, lead.name, user.name)}
           >
             {/* */}
             <svg className='bd-placeholder-img flex-shrink-0 me-2 rounded' width='32' height='32' xmlns='http://www.w3.org/2000/svg' role='img' aria-label='Placeholder: 32x32' preserveAspectRatio='xMidYMid slice' focusable='false'>
@@ -67,7 +74,7 @@ const ListLeads = ({ leads, date }) => {
         <div className='my-3 p-3 bg-white rounded shadow-sm'>
           <h6 className='border-bottom pb-2 mb-0'><strong>{dateStr}</strong></h6>
           {/* */}
-          {renderListLeads(leads)}
+          {renderListLeads(user, leads)}
           {/* */}
         </div>
         {/* */}

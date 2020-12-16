@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { API_URL } from '../config'
-
-import { useFetch } from '../hooks'
 
 import './AuthPage.css'
 
@@ -11,34 +9,35 @@ const AuthPage = ({ onLogged }) => {
   const [password, setPassword] = useState('')
   const [alert, setAlert] = useState('')
 
-  const [res, { doPost }] = useFetch(API_URL + '/auth')
-
-  const response = JSON.stringify(res)
-
-  useEffect(() => {
-    const { error, fetching, data } = JSON.parse(response)
-    if (error && error.message) {
-      setAlert('error: ' + error.message)
-    } else if (fetching) {
-      setAlert('loading...')
-    } else {
-      if (data.error) {
-        setAlert(data.error.message)
-      } else if (data.invalid) {
-        setAlert(data.invalid)
-      } else if (data.token) {
-        onLogged(data.token)
-      } else {
-        setAlert('')
-      }
-    }
-  }, [response, onLogged])
-
   const handleSubmit = () => {
-    doPost({
-      phone,
-      password
+    fetch(API_URL + '/auth', {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify({
+        phone,
+        password
+      })
     })
+      .then(res => res.json())
+      .then(json => {
+        if (json.error) {
+          setAlert(json.error.message)
+        } else if (json.invalid) {
+          setAlert(json.invalid)
+        } else if (json.token) {
+          onLogged(json.token)
+        } else {
+          setAlert('')
+        }
+      })
   }
 
   const handleChangePhone = e => {

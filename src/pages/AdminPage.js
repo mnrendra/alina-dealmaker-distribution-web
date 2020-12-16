@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 
-import { API_URL } from '../config'
+import { API_URL, MY_URL, NOTIF_SOUND_PATH } from '../config'
 
-// import { useFetch } from '../hooks'
+import { useNotification } from '../utils'
 
 import { Header, Tab, ListLeads } from '../components'
 
@@ -16,6 +16,17 @@ const AdminPage = ({ user, socket }) => {
   const [allLeads, setAllLeads] = useState([])
   const [leads, setLeads] = useState([])
   const [date, setDate] = useState(new Date())
+  const [newLead, setNewLead] = useState({})
+  const [newLeads, setNewLeads] = useState([])
+
+  const [showNotification] = useNotification({ soundURL: NOTIF_SOUND_PATH, onClickURL: MY_URL })
+
+  useEffect(() => {
+    if (newLead.name && newLead.phone) {
+      const message = `New Lead! ${newLead.name} ${newLead.phone}`
+      showNotification(message)
+    }
+  }, [showNotification, newLead])
 
   useEffect(() => {
     setLoading(true)
@@ -37,7 +48,7 @@ const AdminPage = ({ user, socket }) => {
 
   useEffect(() => {
     setLoading(true)
-    fetch(API_URL + '/lead?time=' + new Date('2020-12-15').getTime())
+    fetch(API_URL + '/lead?time=' + new Date('2020-12-16').getTime())
       .then(res => res.json())
       .then(json => {
         if (json.error) {
@@ -55,20 +66,48 @@ const AdminPage = ({ user, socket }) => {
   }, [setAllLeads])
 
   useEffect(() => {
-    const leads = allLeads.filter((lead = {}) => {
+    if (socket && socket.on && socket.emit && Array.isArray(dealMakers) && dealMakers.length) {
+      const userIds = dealMakers.map(({ _id }) => _id)
+      socket.emit('join', { type: 'superAdmin', userIds })
+
+      socket.on('new-leads', (data = {}) => {
+        setNewLead(data)
+      })
+    }
+
+    return () => {
+      setNewLead({})
+    }
+  }, [socket, dealMakers])
+
+  useEffect(() => {
+    let newleads = []
+    if (newLead && newLead._id) {
+      newleads = [newLead, ...allLeads]
+      setNewLead({})
+      setAllLeads(newleads)
+    } else {
+      newleads = allLeads
+    }
+
+    setNewLeads(newleads)
+  }, [setNewLeads, setAllLeads, setNewLead, allLeads, newLead])
+
+  useEffect(() => {
+    const leads = newLeads.filter((lead = {}) => {
       if (currentTab === 'all') return lead
       else if (lead.customerService && currentTab === lead.customerService._id) return lead
       else return false
     })
 
     setLeads(leads)
-  }, [setLeads, currentTab, allLeads])
+  }, [setLeads, currentTab, newLeads])
 
   const handleChangeTab = csId => {
     setCurrentTab(csId)
   }
 
-  const renderContent = (error = {}, loading = false, currentTab = 'all', dealMakers = [], leads = [], date = new Date()) => {
+  const renderContent = (error = {}, loading = false, currentTab = 'all', dealMakers = [], newLeads = [], leads = [], date = new Date()) => {
     if (error.message) {
       return (<div style={{ margin: '100px auto' }}>{error.message}</div>)
     } else if (loading) {
@@ -79,7 +118,7 @@ const AdminPage = ({ user, socket }) => {
           <Tab
             currentTab={currentTab}
             dealMakers={dealMakers}
-            allLeads={allLeads}
+            allLeads={newLeads}
             onChange={handleChangeTab}
           />
           <ListLeads
@@ -96,7 +135,7 @@ const AdminPage = ({ user, socket }) => {
       <Header
         user={user}
       />
-      {renderContent(error, loading, currentTab, dealMakers, leads, date)}
+      {renderContent(error, loading, currentTab, dealMakers, newLeads, leads, date)}
     </div>
   )
 }
