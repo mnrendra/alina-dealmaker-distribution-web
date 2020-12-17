@@ -1,13 +1,8 @@
-export const KEY = process.env.REACT_KEY || 'lRZVu5v6nlc9NUwj'
-
-export const JWT_KEY = process.env.REACT_JWT_KEY || 'CendolD4w3t!'
-
-// export const API_URL = process.env.REACT_API_URL || 'http://192.168.18.92:3001'
-export const API_URL = process.env.REACT_API_URL || 'http://localhost:3001'
-
-export const MY_URL = process.env.REACT_MY_URL || 'http://localhost:3000'
-
-export const NOTIF_SOUND_PATH = process.env.REACT_NOTIF_SOUND_PATH || './tarik_sis.mp3'
+export const KEY /* -------------- */ = process.env.REACT_KEY /* -------------- */ || 'lRZVu5v6nlc9NUwj'
+export const JWT_KEY /* ---------- */ = process.env.REACT_JWT_KEY /* ---------- */ || 'CendolD4w3t!'
+export const API_URL /* ---------- */ = process.env.REACT_API_URL /* ---------- */ || 'http://localhost:3001'
+export const MY_URL /* ----------- */ = process.env.REACT_MY_URL /* ----------- */ || 'http://localhost:3000'
+export const NOTIF_SOUND_PATH /* - */ = process.env.REACT_NOTIF_SOUND_PATH /* - */ || './tarik_sis.mp3'
 
 const extraHeaders = {}
 extraHeaders[KEY] = KEY
