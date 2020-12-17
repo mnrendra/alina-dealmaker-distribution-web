@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import jwt from 'jsonwebtoken'
 import Cookies from 'universal-cookie'
 
-import { API_URL, SOCKET_IO_OPTIONS, JWT_KEY } from './config'
+// import { API_URL, SOCKET_IO_OPTIONS, JWT_KEY } from './config'
+import { API_URL, JWT_KEY } from './config'
 
 import { useSocket } from './hooks'
 
@@ -18,7 +19,8 @@ const App = () => {
   const [page, setPage] = useState('')
   const [user, setUser] = useState({})
 
-  const [socket] = useSocket(API_URL, SOCKET_IO_OPTIONS)
+  // const [socket] = useSocket(API_URL, SOCKET_IO_OPTIONS)
+  const [socket] = useSocket(API_URL)
 
   useEffect(() => {
     const cookies = new Cookies()
