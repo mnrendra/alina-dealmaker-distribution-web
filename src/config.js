@@ -1,15 +1,16 @@
-export const KEY /* -------------- */ = process.env.REACT_KEY /* -------------- */ || 'lRZVu5v6nlc9NUwj'
-export const JWT_KEY /* ---------- */ = process.env.REACT_JWT_KEY /* ---------- */ || 'CendolD4w3t!'
-export const API_URL /* ---------- */ = process.env.REACT_API_URL /* ---------- */ || 'http://localhost:3001'
-export const MY_URL /* ----------- */ = process.env.REACT_MY_URL /* ----------- */ || 'http://localhost:3000'
-export const NOTIF_SOUND_PATH /* - */ = process.env.REACT_NOTIF_SOUND_PATH /* - */ || './tarik_sis.mp3'
+export const SOCKET_IO_EXTRA_HEADERS /* - */ = process.env.SOCKET_IO_EXTRA_HEADERS /* - */ || 'lrzvu5v6nlc9nuwjz' // alphanumeric only (cannot contain other chars)
+// export const KEY /* ------------------ */ = process.env.REACT_KEY /* --------------- */ || 'lRZVu5v6nlc9NUwjk'
+export const JWT_KEY /* ----------------- */ = process.env.REACT_JWT_KEY /* ----------- */ || 'CendolD4w3t!?!Z'
+export const API_URL /* ----------------- */ = process.env.REACT_API_URL /* ----------- */ || 'https://api.puspanegara.com'
+export const MY_URL /* ------------------ */ = process.env.REACT_MY_URL /* ------------ */ || 'https://puspanegara.com/cs'
+export const NOTIF_SOUND_PATH /* -------- */ = process.env.REACT_NOTIF_SOUND_PATH /* -- */ || './tarik_sis.mp3'
 
 const extraHeaders = {}
-extraHeaders[KEY] = KEY
+extraHeaders[SOCKET_IO_EXTRA_HEADERS] = SOCKET_IO_EXTRA_HEADERS
 
 export const SOCKET_IO_OPTIONS = {
   withCredentials: true,
-  extraHeaders: extraHeaders
+  extraHeaders: { lrzvu5v6nlc9nuwz: 'lrzvu5v6nlc9nuwz' }
 }
 
 export const FETCH_OPTIONS = {
