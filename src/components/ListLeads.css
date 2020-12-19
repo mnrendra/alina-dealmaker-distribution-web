@@ -1,7 +1,59 @@
-.ListLeads.d-flex.text-muted.pt-3 {
+.ListLeads .my-3.p-3.bg-white.rounded.shadow-sm {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.ListLeads-List.d-flex.text-muted.pt-3 {
+  padding-right: 16px !important;
+  padding-left: 16px !important;
   cursor: pointer;
 }
 
-.ListLeads.d-flex.text-muted.pt-3:hover {
+.ListLeads-List.d-flex.text-muted.pt-3:hover {
   background: #F5F5F5;
+}
+
+.ListLeads .ListLeads-Header {
+  width: 100%;
+  padding: 0 16px 24px 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, .12)
+}
+
+.ListLeads .ListLeads-Body {
+  width: 100%;
+}
+
+.ListLeads .ListLeads-Header .ListLeads-Header-Icon {
+  width: 10%;
+  height: 24px;
+  padding: 12px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.ListLeads .ListLeads-Header .ListLeads-Header-Icon.ListLeads-Header-Icon-Right {
+  text-align: right;
+}
+
+.ListLeads .ListLeads-Header .ListLeads-Header-Icon svg {
+  width: 24px;
+  height: 24px;
+  fill: rgba(0, 0, 0, .54);
+}
+
+.ListLeads .ListLeads-Header .ListLeads-Header-Icon svg:hover {
+  fill: rgba(0, 0, 0, .74);
+}
+
+.ListLeads .ListLeads-Header .ListLeads-Header-Icon svg.disabled {
+  fill: rgba(0, 0, 0, .12);
+  cursor: default;
+}
+
+.ListLeads .ListLeads-Title {
+  width: 80%;
+  display: inline-block;
+  text-align: center;
+  cursor: default;
+  color: rgba(0, 0, 0, .54)
 }

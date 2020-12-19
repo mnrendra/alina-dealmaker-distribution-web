@@ -16,6 +16,7 @@ const AdminPage = ({ user, socket }) => {
   const [allLeads, setAllLeads] = useState([])
   const [leads, setLeads] = useState([])
   const [date, setDate] = useState(new Date())
+  const [filterDate, setFilterDate] = useState(new Date())
   const [newLead, setNewLead] = useState({})
   const [newLeads, setNewLeads] = useState([])
 
@@ -27,6 +28,16 @@ const AdminPage = ({ user, socket }) => {
       showNotification(message)
     }
   }, [showNotification, newLead])
+
+  useEffect(() => {
+    const currentTime /* - */ = new Date().getTime()
+    const today00mmss /* - */ = currentTime - (1000 * 60 * 60 * new Date(currentTime).getHours())
+    const today0000ss /* - */ = today00mmss - (1000 * 60 * new Date(today00mmss).getMinutes())
+    const today000000 /* - */ = today0000ss - (1000 * new Date(today0000ss).getSeconds())
+    const today /* ------- */ = today000000 - new Date(today000000).getMilliseconds()
+
+    setFilterDate(new Date(today))
+  }, [setFilterDate])
 
   useEffect(() => {
     setLoading(true)
@@ -48,7 +59,7 @@ const AdminPage = ({ user, socket }) => {
 
   useEffect(() => {
     setLoading(true)
-    fetch(API_URL + '/lead?time=' + new Date('2020-12-18').getTime())
+    fetch(API_URL + '/lead?time=' + filterDate.getTime())
       .then(res => res.json())
       .then(json => {
         if (json.error) {
@@ -63,7 +74,7 @@ const AdminPage = ({ user, socket }) => {
         }
         setLoading(false)
       })
-  }, [setAllLeads])
+  }, [setAllLeads, filterDate])
 
   useEffect(() => {
     if (socket && socket.on && socket.emit && Array.isArray(dealMakers) && dealMakers.length) {
@@ -107,7 +118,17 @@ const AdminPage = ({ user, socket }) => {
     setCurrentTab(csId)
   }
 
-  const renderContent = (error = {}, loading = false, currentTab = 'all', dealMakers = [], newLeads = [], leads = [], date = new Date()) => {
+  const handleFilterDate = date => {
+    if (date) {
+      if (typeof date === 'string') setFilterDate(new Date(date))
+      else if (typeof date.getTime === 'function') setFilterDate(date)
+      else setFilterDate(new Date())
+    } else {
+      setFilterDate(new Date())
+    }
+  }
+
+  const renderContent = (error = {}, loading = false, currentTab = 'all', dealMakers = [], newLeads = [], leads = [], date = new Date(), handleFilterDate = () => {}) => {
     if (error.message) {
       return (<div style={{ margin: '100px auto' }}>{error.message}</div>)
     } else if (loading) {
@@ -124,6 +145,7 @@ const AdminPage = ({ user, socket }) => {
           <ListLeads
             leads={leads}
             date={date}
+            onChangeDate={handleFilterDate}
           />
         </>
       )
@@ -135,7 +157,7 @@ const AdminPage = ({ user, socket }) => {
       <Header
         user={user}
       />
-      {renderContent(error, loading, currentTab, dealMakers, newLeads, leads, date)}
+      {renderContent(error, loading, currentTab, dealMakers, newLeads, leads, date, handleFilterDate)}
     </div>
   )
 }
