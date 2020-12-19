@@ -16,6 +16,7 @@ const CustomerServicePage = ({ user, socket }) => {
   const [error, setError] = useState({})
   const [loading, setLoading] = useState(false)
   const [date, setDate] = useState(new Date())
+  const [filterDate, setFilterDate] = useState(new Date())
 
   // hooks
   const [showNotification] = useNotification({ soundURL: NOTIF_SOUND_PATH, onClickURL: MY_URL })
@@ -47,7 +48,7 @@ const CustomerServicePage = ({ user, socket }) => {
   useEffect(() => {
     if (user._id) {
       setLoading(true)
-      fetch(API_URL + '/lead?dealmaker=' + user._id + '&time=' + new Date('2020-12-18').getTime())
+      fetch(API_URL + '/lead?dealmaker=' + user._id + '&time=' + filterDate.getTime())
         .then(res => res.json())
         .then(json => {
           if (json.error) {
@@ -63,7 +64,7 @@ const CustomerServicePage = ({ user, socket }) => {
           setLoading(false)
         })
     }
-  }, [setLeads, user])
+  }, [setLeads, user, filterDate])
 
   // new lead
   useEffect(() => {
@@ -71,10 +72,22 @@ const CustomerServicePage = ({ user, socket }) => {
     setAllLeads(allleads)
   }, [setAllLeads, leads, newLead])
 
+  // handle
+
+  const handleFilterDate = date => {
+    if (date) {
+      if (typeof date === 'string') setFilterDate(new Date(date))
+      else if (typeof date.getTime === 'function') setFilterDate(date)
+      else setFilterDate(new Date())
+    } else {
+      setFilterDate(new Date())
+    }
+  }
+
   // render
 
   // render content
-  const renderContent = (user = {}, error = {}, loading = false, leads = [], date = new Date()) => {
+  const renderContent = (user = {}, error = {}, loading = false, leads = [], date = new Date(), handleFilterDate = () => {}) => {
     if (error.message) {
       return (<div style={{ margin: '100px auto' }}>{error.message}</div>)
     } else if (loading) {
@@ -86,6 +99,7 @@ const CustomerServicePage = ({ user, socket }) => {
             leads={leads}
             date={date}
             user={user}
+            onChangeDate={handleFilterDate}
           />
         </>
       )
@@ -98,7 +112,7 @@ const CustomerServicePage = ({ user, socket }) => {
       <Header
         user={user}
       />
-      {renderContent(user, error, loading, allLeads, date)}
+      {renderContent(user, error, loading, allLeads, date, handleFilterDate)}
     </div>
   )
 }
