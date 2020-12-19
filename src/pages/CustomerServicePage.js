@@ -47,7 +47,7 @@ const CustomerServicePage = ({ user, socket }) => {
   useEffect(() => {
     if (user._id) {
       setLoading(true)
-      fetch(API_URL + '/lead?dealmaker=' + user._id + '&time=' + new Date('2020-12-17').getTime())
+      fetch(API_URL + '/lead?dealmaker=' + user._id + '&time=' + new Date('2020-12-18').getTime())
         .then(res => res.json())
         .then(json => {
           if (json.error) {

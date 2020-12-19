@@ -48,7 +48,7 @@ const AdminPage = ({ user, socket }) => {
 
   useEffect(() => {
     setLoading(true)
-    fetch(API_URL + '/lead?time=' + new Date('2020-12-17').getTime())
+    fetch(API_URL + '/lead?time=' + new Date('2020-12-18').getTime())
       .then(res => res.json())
       .then(json => {
         if (json.error) {

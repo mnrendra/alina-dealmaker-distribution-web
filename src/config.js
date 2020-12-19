@@ -1,8 +1,8 @@
 export const SOCKET_IO_EXTRA_HEADERS /* - */ = process.env.SOCKET_IO_EXTRA_HEADERS /* - */ || 'lrzvu5v6nlc9nuwjz' // alphanumeric only (cannot contain other chars)
 // export const KEY /* ------------------ */ = process.env.REACT_KEY /* --------------- */ || 'lRZVu5v6nlc9NUwjk'
 export const JWT_KEY /* ----------------- */ = process.env.REACT_JWT_KEY /* ----------- */ || 'CendolD4w3t!?!Z'
-export const API_URL /* ----------------- */ = process.env.REACT_API_URL /* ----------- */ || 'https://api.puspanegara.com'
-export const MY_URL /* ------------------ */ = process.env.REACT_MY_URL /* ------------ */ || 'https://puspanegara.com/cs'
+export const API_URL /* ----------------- */ = process.env.REACT_API_URL /* ----------- */ || 'https://api.alinagroup.agency'
+export const MY_URL /* ------------------ */ = process.env.REACT_MY_URL /* ------------ */ || 'https://alinagroup.agency/cs'
 export const NOTIF_SOUND_PATH /* -------- */ = process.env.REACT_NOTIF_SOUND_PATH /* -- */ || './tarik_sis.mp3'
 
 const extraHeaders = {}
