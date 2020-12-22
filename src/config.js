@@ -4,6 +4,7 @@ export const JWT_KEY /* ----------------- */ = process.env.REACT_JWT_KEY /* ----
 export const API_URL /* ----------------- */ = process.env.REACT_API_URL /* ----------- */ || 'https://api.alinagroup.agency'
 export const MY_URL /* ------------------ */ = process.env.REACT_MY_URL /* ------------ */ || 'https://alinagroup.agency/cs'
 export const NOTIF_SOUND_PATH /* -------- */ = process.env.REACT_NOTIF_SOUND_PATH /* -- */ || './tarik_sis.mp3'
+export const FIRST_DATE /* -------------- */ = process.env.REACT_FIRST_DATE /* -------- */ || '2020-10-13T00:00:00+07:00'
 
 const extraHeaders = {}
 extraHeaders[SOCKET_IO_EXTRA_HEADERS] = SOCKET_IO_EXTRA_HEADERS
