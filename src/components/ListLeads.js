@@ -26,7 +26,7 @@ const ListLeads = ({ user, leads, date, onChangeDate }) => {
     filteredDate >= today ? setNextDisabled(true) : setNextDisabled(false)
     //
     const firstDate = new Date(FIRST_DATE)
-    filteredDate <= firstDate.getTime() ? setPrevDisabled(true) : setPrevDisabled(false)
+    filteredDate <= firstDate.getTime() ? setPrevDisabled(false) : setPrevDisabled(false)
     //
   }, [setPrevDisabled, setNextDisabled, date])
 
