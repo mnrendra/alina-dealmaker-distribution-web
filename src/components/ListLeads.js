@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { FIRST_DATE } from '../config'
+
 import { firstChat } from '../utils/whatsappTemplates'
 
 import './ListLeads.css'
@@ -22,11 +24,11 @@ const ListLeads = ({ user, leads, date, onChangeDate }) => {
     const today = Number(`${tYear}${(tMonth + 1) < 10 ? '0' + (tMonth + 1) : (tMonth + 1)}${tDate}`)
     //
     filteredDate >= today ? setNextDisabled(true) : setNextDisabled(false)
-  }, [setNextDisabled, date])
-
-  useEffect(() => {
-    leads.length < 1 ? setPrevDisabled(true) : setPrevDisabled(false)
-  }, [setPrevDisabled, leads])
+    //
+    const firstDate = new Date(FIRST_DATE)
+    filteredDate <= firstDate.getTime() ? setPrevDisabled(true) : setPrevDisabled(false)
+    //
+  }, [setPrevDisabled, setNextDisabled, date])
 
   const handleOpenWhatsapp = (phone, leadName, userName) => {
     const now = new Date()
