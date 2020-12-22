@@ -44,6 +44,17 @@ const CustomerServicePage = ({ user, socket }) => {
     }
   }, [socket, user])
 
+  //
+  useEffect(() => {
+    const currentTime /* - */ = new Date().getTime()
+    const today00mmss /* - */ = currentTime - (1000 * 60 * 60 * new Date(currentTime).getHours())
+    const today0000ss /* - */ = today00mmss - (1000 * 60 * new Date(today00mmss).getMinutes())
+    const today000000 /* - */ = today0000ss - (1000 * new Date(today0000ss).getSeconds())
+    const today /* ------- */ = today000000 - new Date(today000000).getMilliseconds()
+
+    setFilterDate(new Date(today))
+  }, [setFilterDate])
+
   // fetch
   useEffect(() => {
     if (user._id) {
