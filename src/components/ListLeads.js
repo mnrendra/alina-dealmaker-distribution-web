@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { FIRST_DATE } from '../config'
 
-import { firstChat } from '../utils/whatsappTemplates'
+import { firstChatAyunda, firstChatDebby, firstChatHendy, firstChatRadit } from '../utils/whatsappTemplates'
 
 import './ListLeads.css'
 
@@ -38,7 +38,15 @@ const ListLeads = ({ user, leads, date, onChangeDate }) => {
     else if (hours >= 10 && hours < 15) time = 'siang'
     else if (hours >= 15 && hours < 18) time = 'sore'
     else time = 'malam'
-    const whatsappURL = 'whatsapp://send?phone=' + phone + '&text=' + firstChat(time, leadName, userName)
+    let template = () => {}
+    switch (userName) {
+      case 'Ayunda': template = firstChatAyunda; break
+      case 'Debby': template = firstChatDebby; break
+      case 'Hendy': template = firstChatHendy; break
+      case 'Radit': template = firstChatRadit; break
+      default: template = () => {}
+    }
+    const whatsappURL = 'whatsapp://send?phone=' + phone + '&text=' + template(time, leadName, userName)
     window.open(whatsappURL)
   }
 
