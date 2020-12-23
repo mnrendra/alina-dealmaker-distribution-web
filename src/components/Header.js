@@ -18,15 +18,15 @@ const Header = ({ user }) => {
           </span>
           <ul className='nav justify-content-end'>
             <li
+              className='nav-item Header-Name'
+            >
+              <span className='nav-link active' style={{ marginRight: '24px' }}>Hai {user.name}!</span>
+            </li>
+            <li
               className='nav-item Header-Logout'
               onClick={handleLogout}
             >
               <span className='nav-link active'>Logout</span>
-            </li>
-            <li
-              className='nav-item Header-Name'
-            >
-              <span className='nav-link active' style={{ marginRight: '24px' }}>Hai {user.name}!</span>
             </li>
           </ul>
         </div>
