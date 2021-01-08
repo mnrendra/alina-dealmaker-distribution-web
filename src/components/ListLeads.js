@@ -21,13 +21,13 @@ const ListLeads = ({ user, leads, date, onChangeDate }) => {
     const fYear = date.getFullYear()
     const fMonth = date.getMonth()
     const fDate = date.getDate()
-    const filteredDate = Number(`${fYear}${(fMonth + 1) < 10 ? '0' + (fMonth + 1) : (fMonth + 1)}${fDate}`)
+    const filteredDate = Number(`${fYear}${(fMonth + 1) < 10 ? '0' + (fMonth + 1) : (fMonth + 1)}${fDate < 10 ? '0' + fDate : fDate}`)
     //
     const now = new Date()
     const tYear = now.getFullYear()
     const tMonth = now.getMonth()
     const tDate = now.getDate()
-    const today = Number(`${tYear}${(tMonth + 1) < 10 ? '0' + (tMonth + 1) : (tMonth + 1)}${tDate}`)
+    const today = Number(`${tYear}${(tMonth + 1) < 10 ? '0' + (tMonth + 1) : (tMonth + 1)}${tDate < 10 ? '0' + tDate : tDate}`)
     //
     filteredDate >= today ? setNextDisabled(true) : setNextDisabled(false)
     //
@@ -114,7 +114,7 @@ const ListLeads = ({ user, leads, date, onChangeDate }) => {
 
   const $date = !isNaN(date.getTime()) ? date : { getFullYear: () => false, getMonth: () => false, getDate: () => false }
   const $dateYear = $date.getFullYear()
-  const $dateMonth = Number($date.getMonth()) ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][$date.getMonth()] : false
+  const $dateMonth = Number($date.getMonth()) >= 0 && Number($date.getMonth()) <= 11 ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][$date.getMonth()] : false
   const $dateDate = $date.getDate()
   const dateStr = $dateYear && $dateDate && $dateDate ? `${$dateMonth} ${$dateDate}, ${$dateYear}` : 'Error'
 
